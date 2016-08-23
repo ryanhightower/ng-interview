@@ -1,4 +1,40 @@
-<h2>Students</h2>
-<ul>
-	<li>Here are your students...</li>
-</ul>
+<style media="screen">
+.viewer{ background: #eee; border: 1px solid #ccc; border-radius: 3px; min-height: 150px; }
+</style>
+<div class="container-fluid">
+	<h2>Students</h2>
+	<div class="row">
+		<div class="col-sm-6 col-sm-push-6">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<p ng-show="!vm.show.active">Click a student to view details.</p>
+					<dl class="dl-horizontal" ng-show="vm.show.active">
+						<dt>Name:</dt><dd>{{vm.active.FirstName}} {{vm.active.LastName}}</dd>
+						<dt>Favorite Food:</dt><dd>{{vm.active.FavoriteFood}}</dd>
+						<dt>Favorite Color:</dt><dd>{{vm.active.FavoriteColor}}</dd>
+						<dt>FavoriteMovie:</dt><dd>{{vm.active.FavoriteMovie}}</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6 col-sm-pull-6">
+			<div class="loader" ng-show="vm.show.isLoading">Loading...</div>
+			<ul class="list-unstyled" ng-show="vm.show.isLoaded">
+				<li ng-repeat="student in vm.students track by $index"
+						ng-click="vm.viewStudent(student)">
+					<span class="btn btn-link">
+						{{student.FirstName}} {{student.LastName}}
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div ng-show="vm.show.notLoaded" style="color:red;">
+		<ul>
+			<li ng-repeat="e in errors">{{e}}</li>
+		</ul>
+	</div>
+	<div ng-show="vm.show.modal">
+		<h1>{{ active.FirstName }}</h1>
+	</div>
+</div>
