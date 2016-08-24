@@ -54,10 +54,13 @@
 			return StudentsService.all()
 				.then(function(students){
 					// If no students
+					console.log("students:", students);
+					swal("Congrats! you downloaded "+students.length+" Students!","success");
 					if(!students) return vm.errors.push("Could not retrieve students from network.");
 					if(students.error)
-						return vm.errors.push("Could not retrieve students from network. "+students.error);
+						swal(students.error,"errors");
 
+						// return vm.errors.push("Could not retrieve students from network. "+students.error);
 					vm.students = students;
 				});
 		}
