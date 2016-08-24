@@ -38,6 +38,22 @@ describe('ngInterview.api.students', function() {
 			$httpBackend.flush();
 		}));
 
+		it('should return error on 404', inject(function(StudentsService, $httpBackend, $http){
+			var badResponse = {status:404};
+
+			$httpBackend.expectGET('http://il-resume-api.azurewebsites.net/api/students').respond(badResponse);
+			StudentsService.all()
+				.then(function(students){
+					// this shouldn't fire
+					expect(students).not.toBeDefined;
+				})
+				.catch(function(e){
+					console.log(e);
+					expect(e).toBeDefined;
+				});
+			$httpBackend.flush();
+		}));
+
 		it('should return "undefined" on invalid JSON', inject(function(StudentsService, $httpBackend, $http){
 			expect(true).toBe(true);
 			$httpBackend.expectGET('http://il-resume-api.azurewebsites.net/api/students').respond('N7B3NQZ3UY32B26O36UAIUBQQ12MAM75A67BRSX');

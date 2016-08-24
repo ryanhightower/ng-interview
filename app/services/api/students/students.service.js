@@ -25,8 +25,8 @@
 						try {
 							return guardAgainstInvalidJson(success.data);
 						} catch (e) {
-
-							return {error:"Received an invalid response."}
+							return undefined;
+							// return {error:"Received an invalid response."}
 							// return new Promise(function(resolve, reject) {
 							// 	reject("Received an invalid response.");
 							// });
@@ -34,11 +34,24 @@
 
 					},
 					function(error){
-						if(error.status === 503)
-							return getAllStudents();
 
-						// some other error.
-						return {error:error};
+						switch (error.status) {
+							case 503:
+								return getAllStudents();
+								break;
+							case 400:
+								return {error: "Bad Request."};
+								break;
+							case 401:
+								return {error: "Unauthorized."};
+								break;
+							case 404:
+								return {error: "Resource not found."};
+								break;
+							default:
+								return {error: "Your programmer dun goofed."};
+						}
+
 					})
 					.catch( // rejected
 						function(e){
